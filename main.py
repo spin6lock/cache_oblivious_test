@@ -26,9 +26,19 @@ def recursive_build(result, remain):
     recursive_build(result, remain[middle_index + 1:])
 
 
-def construct_cache_friendly_struct(sort_data):
+def construct_preorder_struct(sort_data):
     result = []
     recursive_build(result, sort_data)
+    return result
+
+
+def build_cache_block(result, sort_data):
+    pass
+
+
+def construct_bfs(sort_data):
+    result = []
+    build_cache_block(result, sort_data)
     return result
 
 
@@ -75,21 +85,36 @@ def normal_search(struct, rand_data):
     for index, r in enumerate(rand_data):
         i = binary_search(struct, r)
         if i >= 0:
-            result[index]= r
+            result[index] = r
         else:
             result[index] = i
-    return result    
+    return result
 
 
-def cache_friendly_search(struct, rand_data):
+def preorder_search(struct, rand_data):
     result = [0]*len(rand_data)
     for index, r in enumerate(rand_data):
         i = cache_friendly_binary_search(struct, r)
         if i >= 0:
-            result[index]= r
+            result[index] = r
         else:
             result[index] = i
-    return result    
+    return result
+
+
+def breadth_first_search(struct, r):
+    pass
+
+
+def cache_oblivious_search(struct, rand_data):
+    result = [0]*len(rand_data)
+    for index, r in enumerate(rand_data):
+        i = breadth_first_search(struct, r)
+        if i >= 0:
+            result[index] = r
+        else:
+            result[index] = i
+    return result
 
 
 def main():
@@ -99,12 +124,14 @@ def main():
     # read in sorted number
     sort_data = readin(sort_data_filename)
     struct1 = construct_sort_arr(sort_data)
-    struct2 = construct_cache_friendly_struct(sort_data)
+    struct2 = construct_preorder_struct(sort_data)
+    struct3 = construct_bfs(sort_data)
     # search in data structure, time it
     #print(normal_search(struct1, rand_data))
-    #print(cache_friendly_search(struct2, rand_data))
+    #print(preorder_search(struct2, rand_data))
     print("normal:", timeit.timeit('normal_search(struct1, rand_data)', globals=globals(), number=timeit_count))
-    print("cache friendly:", timeit.timeit('cache_friendly_search(struct2, rand_data)', globals=globals(), number=timeit_count))
+    print("preorder:", timeit.timeit('preorder_search(struct2, rand_data)', globals=globals(), number=timeit_count))
+    print("cache oblivious:", timeit.timeit('cache_oblivious_search(struct3, rand_data)', globals=globals(), number=timeit_count))
 
 
 if __name__ == "__main__":
