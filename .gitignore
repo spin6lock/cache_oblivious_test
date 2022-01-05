@@ -1,0 +1,5 @@
+*.sw?
+__pycache__/
+*.pyc
+query_input
+sort_input
